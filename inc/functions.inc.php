@@ -8,11 +8,16 @@
 function install_table_termmeta() {
 	global $wpdb;
 	
+	if ( ! empty($wpdb->charset) )
+		$charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
+	if ( ! empty($wpdb->collate) )
+		$charset_collate .= " COLLATE $wpdb->collate";
+	
 	// Add one library admin function for next function
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	
 	// Try to create the meta table
-	return maybe_create_table( $wpdb->termmeta, "CREATE TABLE " . $wpdb->termmeta . " (
+	return maybe_create_table( $wpdb->termmeta, "CREATE TABLE $wpdb->termmeta (
 			`meta_id` int(20) NOT NULL auto_increment,
 			`term_taxonomy_id` INT( 20 ) NOT NULL ,
 			`meta_key` VARCHAR( 255 ) NOT NULL ,
@@ -20,6 +25,6 @@ function install_table_termmeta() {
 			PRIMARY KEY  (`meta_id`),
 			KEY `term_taxonomy_id` (`term_taxonomy_id`),
 			KEY `meta_key` (`meta_key`)
-		);" );
+		) $charset_collate;" );
 }
 ?>
