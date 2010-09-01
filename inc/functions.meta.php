@@ -12,7 +12,7 @@
  * @return bool {@internal Missing Description}}
  */
 function add_term_taxonomy_meta( $term_taxonomy_id = 0, $meta_key = '', $meta_value = '', $unique = false ) {
-	return add_metadata( 'term_taxonomy', $term_taxonomy_id, $meta_key, $meta_value, $unique );
+	return add_metadata( 'term_taxo', $term_taxonomy_id, $meta_key, $meta_value, $unique );
 }
 
 /**
@@ -27,7 +27,7 @@ function add_term_taxonomy_meta( $term_taxonomy_id = 0, $meta_key = '', $meta_va
  * @return bool {@internal Missing Description}}
  */
 function delete_term_taxonomy_meta( $term_taxonomy_id = 0, $key = '', $value = '', $delete_all = false ) {
-	return delete_metadata( 'term_taxonomy', $term_taxonomy_id, $key, $value, $delete_all );
+	return delete_metadata( 'term_taxo', $term_taxonomy_id, $key, $value, $delete_all );
 }
 
 /**
@@ -42,7 +42,7 @@ function delete_term_taxonomy_meta( $term_taxonomy_id = 0, $key = '', $value = '
  * @return mixed {@internal Missing Description}}
  */
 function get_term_taxonomy_meta($term_taxonomy_id, $meta_key = '', $single = false) {
-	return get_metadata( 'term_taxonomy', $term_taxonomy_id, $meta_key, $single );
+	return get_metadata( 'term_taxo', $term_taxonomy_id, $meta_key, $single );
 }
 
 /**
@@ -59,7 +59,7 @@ function get_term_taxonomy_meta($term_taxonomy_id, $meta_key = '', $single = fal
  * @return bool {@internal Missing Description}}
  */
 function update_term_taxonomy_meta($term_taxonomy_id, $meta_key, $meta_value, $prev_value = '') {
-	return update_metadata( 'term_taxonomy', $term_taxonomy_id, $meta_key, $meta_value, $prev_value ); 
+	return update_metadata( 'term_taxo', $term_taxonomy_id, $meta_key, $meta_value, $prev_value ); 
 }
 
 /**
@@ -75,7 +75,7 @@ function update_term_taxonomy_meta($term_taxonomy_id, $meta_key, $meta_value, $p
  * @return bool|array Returns false if there is nothing to update or an array of metadata.
  */
 function update_termmeta_cache($term_taxonomy_ids) {
-	return update_meta_cache('term_taxonomy', $term_taxonomy_ids);
+	return update_meta_cache('term_taxo', $term_taxonomy_ids);
 }
 
 /**
@@ -97,11 +97,11 @@ function get_term_taxonomy_custom($term_taxonomy_id = 0) {
 		$term_taxonomy_id = (int) $id;
 
 	$term_taxonomy_id = (int) $term_taxonomy_id;
-
-	if ( ! wp_cache_get($term_taxonomy_id, 'term_meta') )
+	
+	if ( ! wp_cache_get($term_taxonomy_id, 'term_taxo_meta') )
 		update_termmeta_cache($term_taxonomy_id);
 
-	return wp_cache_get($term_taxonomy_id, 'term_meta');
+	return wp_cache_get($term_taxonomy_id, 'term_taxo_meta');
 }
 
 /**
@@ -155,17 +155,17 @@ function delete_term_meta_by_key( $term_meta_key = '' ) {
 	
 	global $wpdb;
 	
-	$term_taxonomy_ids = $wpdb->get_col($wpdb->prepare("SELECT DISTINCT term_taxonomy_id FROM $wpdb->termmeta WHERE meta_key = %s", $term_meta_key));
+	$term_taxonomy_ids = $wpdb->get_col($wpdb->prepare("SELECT DISTINCT term_taxonomy_id FROM $wpdb->term_taxometa WHERE meta_key = %s", $term_meta_key));
 	if ( $term_taxonomy_ids ) {
-		$termmetaids = $wpdb->get_col( $wpdb->prepare( "SELECT meta_id FROM $wpdb->termmeta WHERE meta_key = %s", $term_meta_key ) );
+		$termmetaids = $wpdb->get_col( $wpdb->prepare( "SELECT meta_id FROM $wpdb->term_taxometa WHERE meta_key = %s", $term_meta_key ) );
 		$in = implode( ',', array_fill(1, count($termmetaids), '%d'));
 		
 		do_action( 'delete_termmeta', $termmetaids );
-		$wpdb->query( $wpdb->prepare("DELETE FROM $wpdb->termmeta WHERE meta_id IN ($in)", $termmetaids ));
+		$wpdb->query( $wpdb->prepare("DELETE FROM $wpdb->term_taxometa WHERE meta_id IN ($in)", $termmetaids ));
 		do_action( 'deleted_termmeta', $termmetaids );
 		
 		foreach ( $term_taxonomy_ids as $term_taxonomy_id )
-			wp_cache_delete($term_taxonomy_id, 'term_meta');
+			wp_cache_delete($term_taxonomy_id, 'term_taxo_meta');
 			
 		return true;
 	}
