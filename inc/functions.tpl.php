@@ -41,7 +41,7 @@ function st_get_term_meta( $meta_key = '', $before = '', $after = '', $term_id =
 		return '';
 	
 	$term = false;
-	if ( $term_id != null && !empty($taxonomy) && is_taxonomy($taxonomy) ) {
+	if ( $term_id != null && !empty($taxonomy) && taxonomy_exists($taxonomy) ) {
 		// Manual term with param ?
 		$term = get_term( $term_id, $taxonomy );
 	}
