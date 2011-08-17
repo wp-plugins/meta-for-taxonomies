@@ -120,6 +120,8 @@ function get_term_taxonomy_custom_keys( $term_taxonomy_id = 0 ) {
 
 	if ( $keys = array_keys($custom) )
 		return $keys;
+		
+	return false;
 }
 
 /**
