@@ -4,7 +4,7 @@ Donate link: http://www.beapi.fr/donate/
 Tags: tags, taxonomies, custom taxonomies, termmeta, meta, term meta, taxonomy, meta taxonomy
 Requires at least: 3.0
 Tested up to: 3.3
-Stable tag: 1.1.3
+Stable tag: 1.1.5
 
 Metadatas is attached to taxonomy context and not terms, this way allow to have metas different for the same term on 2 different taxonomies !
 
@@ -42,6 +42,10 @@ For full info go the [Meta for taxonomies](http://redmine.beapi.fr/projects/show
 
 == Changelog ==
 
+* 1.1.5
+	* Fix bug with hook delation, use right name field "term_taxo_id"
+* 1.1.4
+	* Add tables in var class WPDB for multisite compatibility (thanks njuen)
 * 1.1.3
 	* Improve format readme.txt
 	* Check compatibility WP 3.2
