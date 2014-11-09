@@ -170,4 +170,3 @@ function get_term_custom_values( $taxonomy = '', $term_id = 0, $key = '' ) {
 
 	return get_term_taxonomy_custom_values( $key, $term->term_taxonomy_id );
 }
-?>
